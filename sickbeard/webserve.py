@@ -1135,7 +1135,10 @@ class ConfigNotifications:
                           plex_server_host=None, plex_host=None, plex_username=None, plex_password=None,
                           use_growl=None, growl_notify_onsnatch=None, growl_notify_ondownload=None, growl_host=None, growl_password=None, 
                           use_prowl=None, prowl_notify_onsnatch=None, prowl_notify_ondownload=None, prowl_api=None, prowl_priority=0, 
-                          use_twitter=None, twitter_notify_onsnatch=None, twitter_notify_ondownload=None, 
+                          use_twitter=None, twitter_notify_onsnatch=None, twitter_notify_ondownload=None,
+                          use_email=None, email_notify_onsnatch=None, email_notify_ondownload=None,  
+                          email_to_addr=None, email_from_addr=None, email_mta_host=None,
+                          email_mta_port=None,
                           use_notifo=None, notifo_notify_onsnatch=None, notifo_notify_ondownload=None, notifo_username=None, notifo_apisecret=None,
                           use_libnotify=None, libnotify_notify_onsnatch=None, libnotify_notify_ondownload=None,
                           use_nmj=None, nmj_host=None, nmj_database=None, nmj_mount=None, use_synoindex=None):
@@ -1254,6 +1257,21 @@ class ConfigNotifications:
         else:
             use_synoindex = 0
 
+        if email_notify_onsnatch == "on":
+            email_notify_onsnatch = 1
+        else:
+            email_notify_onsnatch = 0
+
+        if email_notify_ondownload == "on":
+            email_notify_ondownload = 1
+        else:
+            email_notify_ondownload = 0
+
+        if use_email == "on":
+            use_email = 1
+        else:
+            use_email = 0
+
         sickbeard.USE_XBMC = use_xbmc
         sickbeard.XBMC_NOTIFY_ONSNATCH = xbmc_notify_onsnatch
         sickbeard.XBMC_NOTIFY_ONDOWNLOAD = xbmc_notify_ondownload
@@ -1304,6 +1322,14 @@ class ConfigNotifications:
         sickbeard.NMJ_MOUNT = nmj_mount
 
         sickbeard.USE_SYNOINDEX = use_synoindex
+
+        sickbeard.USE_EMAIL = use_email
+        sickbeard.EMAIL_NOTIFY_ONSNATCH = email_notify_onsnatch
+        sickbeard.EMAIL_NOTIFY_ONDOWNLOAD = email_notify_ondownload
+        sickbeard.EMAIL_TO_ADDR = email_to_addr
+        sickbeard.EMAIL_FROM_ADDR = email_from_addr
+        sickbeard.EMAIL_MTA_HOST = email_mta_host
+        sickbeard.EMAIL_MTA_PORT = email_mta_port
 
         sickbeard.save_config()
 
@@ -1909,6 +1935,17 @@ class Home:
             return "Successfull started the scan update"
         else:
             return "Test failed to start the scan update"
+
+    @cherrypy.expose
+    def testEMAIL(self):
+        cherrypy.response.headers['Cache-Control'] = "max-age=0,no-cache,no-store"
+
+        result = notifiers.emailer_notifier.test_notify()
+        if result:
+            return "Test message sent successfully"
+        else:
+            return "Test message failed"
+
 
     @cherrypy.expose
     def settingsNMJ(self, host=None):

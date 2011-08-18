@@ -616,11 +616,92 @@
                         <input type="submit" class="config_submitter" value="Save Changes" />
                     </fieldset>
                 </div><!-- /component-group //-->
+                <div id="core-component-group10" class="component-group clearfix">
+                    <div class="component-group-desc">
+                        <h3>Email Notifier</h3>
+                        <p>Allow SickBeard to send notification via email when snatch or download complete.</p>
+                    </div>
+
+                    <fieldset class="component-group-list">
+                        <div class="field-pair">
+                            <input type="checkbox" class="enabler" name="use_email" id="use_email" #if $sickbeard.USE_EMAIL then "checked=\"checked\"" else ""# />
+                            <label class="clearfix" for="use_email">
+                                <span class="component-title">Enable</span>
+                                <span class="component-desc">Should Sick Beard send notifications viaEmail?</span>
+                            </label>
+                        </div>
+
+                        <div id="content_use_email">
+                        <div class="field-pair">
+                            <input type="checkbox" name="email_notify_onsnatch" id="email_notify_onsnatch" #if $sickbeard.EMAIL_NOTIFY_ONSNATCH then "checked=\"checked\"" else ""# />
+                            <label class="clearfix" for="email_notify_onsnatch">
+                                <span class="component-title">Notify on Snatch</span>
+ 
+                                <span class="component-desc">Send notification when we start a download?</span>
+                            </label>
+                        </div>
+
+                        <div class="field-pair">
+                            <input type="checkbox" name="email_notify_ondownload" id="email_notify_ondownload" #if $sickbeard.EMAIL_NOTIFY_ONDOWNLOAD then "checked=\"checked\"" else ""# />
+                            <label class="clearfix" for="email_notify_ondownload">
+                                <span class="component-title">Notify on Download</span>
+                                <span class="component-desc">Send notification when we finish a download?</span>
+                            </label>
+                        </div>
+                        <div class="field-pair">
+                            <label class="nocheck clearfix">
+                                <span class="component-title">Email Server hostname</span>
+                                <input type="text" name="email_mta_host" id="email_mta_host" value="$sickbeard.EMAIL_MTA_HOST" size="35" />
+                            </label>
+                            <label class="nocheck clearfix">
+                                <span class="component-title">&nbsp;</span>
+                                <span class="component-desc">Mail server host (eg localhost)</span>
+                            </label>
+                        </div>
+
+                        <div class="field-pair">
+                            <label class="nocheck clearfix">
+                                <span class="component-title">Email server port</span>
+                                <input type="text" name="email_mta_port" id="email_mta_port" value="$sickbeard.EMAIL_MTA_PORT" size="35" />
+                            </label>
+                            <label class="nocheck clearfix">
+                                <span class="component-title">&nbsp;</span>
+                                <span class="component-desc">Mail server port (eg: 25)</span>
+                            </label>
+                        </div>
+
+                        <div class="field-pair">
+                            <label class="nocheck clearfix">
+                                <span class="component-title">Mail From address</span>
+                                <input type="text" name="email_from_addr" id="email_from_addr" value="$sickbeard.EMAIL_FROM_ADDR" size="35" />
+                            </label>
+                            <label class="nocheck clearfix">
+                                <span class="component-title">&nbsp;</span>
+                                <span class="component-desc">Address to send mail from (eg: none@housejunkie.ca</span>
+                            </label>
+                        </div>
+
+                        <div class="field-pair">
+                            <label class="nocheck clearfix">
+                                <span class="component-title">Email To: Address</span>
+                                <input type="text" name="email_to_addr" id="email_to_addr" value="$sickbeard.EMAIL_TO_ADDR" size="35" />
+                            </label>
+                            <label class="nocheck clearfix">
+                                <span class="component-title">&nbsp;</span>
+                                <span class="component-desc">To whom should we send the notifications to (eg: none@housejunkie.ca)</span>
+                            </label>
+                        </div>
+                        <div class="testNotification" id="testEMAIL-result">Click below to test.</div>
+                        <input type="button" value="Test email notification" id="testEMAIL" />
+                        <input type="submit" class="config_submitter" value="Save Changes" />
+                        </div><!-- /enabler_emailer -->
+                    </fieldset>
+                </div> <!-- /component-group -->
+
 
             <br/><input type="submit" class="config_submitter" value="Save Changes" /><br/>
 
             </div><!-- /config-components //-->
-
 </form>
 
 

@@ -222,6 +222,15 @@ TWITTER_USERNAME = None
 TWITTER_PASSWORD = None
 TWITTER_PREFIX = None
 
+USE_EMAIL = False
+EMAIL_NOTIFY_ONSNATCH = False
+EMAIL_NOTIFY_ONDOWNLOAD = False
+EMAIL_TO_ADDR = None
+EMAIL_FROM_ADDR = None
+EMAIL_MTA_HOST = None
+EMAIL_MTA_PORT = None
+
+
 USE_NOTIFO = False
 NOTIFO_NOTIFY_ONSNATCH = False
 NOTIFO_NOTIFY_ONDOWNLOAD = False
@@ -363,6 +372,8 @@ def initialize(consoleLogging=True):
                 NAMING_DATES, EXTRA_SCRIPTS, USE_TWITTER, TWITTER_USERNAME, TWITTER_PASSWORD, TWITTER_PREFIX, \
                 USE_NOTIFO, NOTIFO_USERNAME, NOTIFO_APISECRET, NOTIFO_NOTIFY_ONDOWNLOAD, NOTIFO_NOTIFY_ONSNATCH, \
                 USE_LIBNOTIFY, LIBNOTIFY_NOTIFY_ONSNATCH, LIBNOTIFY_NOTIFY_ONDOWNLOAD, USE_NMJ, NMJ_HOST, NMJ_DATABASE, NMJ_MOUNT, USE_SYNOINDEX, \
+                USE_EMAIL, EMAIL_NOTIFY_ONSNATCH, EMAIL_NOTIFY_ONDOWNLOAD, EMAIL_TO_ADDR, EMAIL_FROM_ADDR, \
+                EMAIL_MTA_HOST, EMAIL_MTA_PORT, \
                 USE_BANNER, USE_LISTVIEW, METADATA_XBMC, METADATA_MEDIABROWSER, METADATA_PS3, metadata_provider_dict, \
                 NEWZBIN, NEWZBIN_USERNAME, NEWZBIN_PASSWORD, GIT_PATH, MOVE_ASSOCIATED_FILES, \
                 COMING_EPS_LAYOUT, COMING_EPS_SORT, COMING_EPS_DISPLAY_PAUSED, METADATA_WDTV, METADATA_TIVO, IGNORE_WORDS
@@ -384,6 +395,7 @@ def initialize(consoleLogging=True):
         CheckSection('Twitter')
         CheckSection('NMJ')
         CheckSection('Synology')
+        CheckSection('Emailer')
 
         LOG_DIR = check_setting_str(CFG, 'General', 'log_dir', 'Logs')
         if not helpers.makeDir(LOG_DIR):
@@ -556,6 +568,15 @@ def initialize(consoleLogging=True):
         TWITTER_USERNAME = check_setting_str(CFG, 'Twitter', 'twitter_username', '')
         TWITTER_PASSWORD = check_setting_str(CFG, 'Twitter', 'twitter_password', '')
         TWITTER_PREFIX = check_setting_str(CFG, 'Twitter', 'twitter_prefix', 'Sick Beard')
+
+        USE_EMAIL = bool(check_setting_int(CFG, 'Emailer', 'use_email', 0))
+        EMAIL_NOTIFY_ONSNATCH = bool(check_setting_int(CFG, 'Emailer', 'email_notify_onsnatch', 0))
+        EMAIL_NOTIFY_ONDOWNLOAD = bool(check_setting_int(CFG, 'Emailer', 'email_notify_ondownload', 0))
+        EMAIL_TO_ADDR = check_setting_str(CFG, 'Emailer', 'email_to_addr', '')
+        EMAIL_FROM_ADDR = check_setting_str(CFG, 'Emailer', 'email_from_addr', '')
+        EMAIL_MTA_HOST = check_setting_str(CFG, 'Emailer', 'email_mta_host', '')
+        EMAIL_MTA_PORT = check_setting_str(CFG, 'Emailer', 'email_mta_port', '')
+
 
         USE_NOTIFO = bool(check_setting_int(CFG, 'Notifo', 'use_notifo', 0))
         NOTIFO_NOTIFY_ONSNATCH = bool(check_setting_int(CFG, 'Notifo', 'notifo_notify_onsnatch', 0))
@@ -1050,6 +1071,15 @@ def save_config():
     new_config['Twitter']['twitter_username'] = TWITTER_USERNAME
     new_config['Twitter']['twitter_password'] = TWITTER_PASSWORD
     new_config['Twitter']['twitter_prefix'] = TWITTER_PREFIX
+
+    new_config['Emailer'] = {}
+    new_config['Emailer']['use_email'] = int(USE_EMAIL)
+    new_config['Emailer']['email_notify_onsnatch'] = int(EMAIL_NOTIFY_ONSNATCH)
+    new_config['Emailer']['email_notify_ondownload'] = int(EMAIL_NOTIFY_ONDOWNLOAD)
+    new_config['Emailer']['email_from_addr'] = EMAIL_FROM_ADDR
+    new_config['Emailer']['email_to_addr'] = EMAIL_TO_ADDR
+    new_config['Emailer']['email_mta_host'] = EMAIL_MTA_HOST
+    new_config['Emailer']['email_mta_port'] = EMAIL_MTA_PORT
 
     new_config['Notifo'] = {}
     new_config['Notifo']['use_notifo'] = int(USE_NOTIFO)
