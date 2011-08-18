@@ -37,13 +37,13 @@ class EMAILNotifier:
     def test_notify(self):
         return self._notifyEMAIL("test-episode", "test-message", \
                      "Testing SickBeard email notifications.")
-
+    
     def _to_addr(self):
         return sickbeard.EMAIL_TO_ADDR
-
+    
     def _from_addr(self):
         return sickbeard.EMAIL_FROM_ADDR
-
+    
     def _mta_host(self):
         return sickbeard.EMAIL_MTA_HOST
 
@@ -52,11 +52,13 @@ class EMAILNotifier:
 
     def _notifyEMAIL(self, ep_name, sbtype, subject=None):
 
-        if not self._mta_port  or not self._mta_host:
+        logger.log(u"Sending email notification", logger.DEBUG)
+
+        if not self._mta_port()  or not self._mta_host():
             logger.log(u"Mail server name or port not specified, skipping", logger.DEBUG)
             return False
 
-        if not self._to_addr or not self._from_addr:
+        if not self._to_addr() or not self._from_addr():
             logger.log(u"To: or From: fields not specified, skipping", \
                             logger.DEBUG)
             return False 
@@ -67,15 +69,15 @@ class EMAILNotifier:
         
         message = ("To: %s\nFrom: %s\nSubject: %s\n\n"  \
                    "Alert : completed a %s of %s" \
-                     % (self._to_addr, \
-                        self._from_addr, \
+                     % (self._to_addr(), \
+                        self._from_addr(), \
                         subject, \
                         sbtype, \
                         ep_name))
 
         try:
-            s = smtplib.SMTP(self._mta_host, self._mta_port)
-            s.sendmail(self._from_addr, self._to_addr, message)
+            s = smtplib.SMTP(self._mta_host(), self._mta_port())
+            s.sendmail(self._from_addr(), self._to_addr(), message)
         except SMTPException:
             logger.log(u"Error sendmail message, please check settings", \
                         logger.ERROR)
